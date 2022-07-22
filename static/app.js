@@ -1,6 +1,7 @@
 class chatbox {
   constructor() {
       this.args ={
+
           openButton: document.querySelector(selector:'.chatbox__button'),
           chatbox: document.querySelector(selector:'.chatbox__support'),
           sendbox: document.querySelector(selector:'.send__button')
@@ -52,7 +53,7 @@ method: 'POST',
 body: JSON.stringify( value: { message: texti }),
 mode: 'cors',
 headers: {
-"Content-Type': 'application/json',
+Content-Type: 'application/json',
 },
 }) Promise<Response>
 .then(r==>r.json())Promise<any>
