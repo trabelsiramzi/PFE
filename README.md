@@ -9,9 +9,11 @@ $ git clone https://github.com/trabelsiramzi/PFE.git
 $ cd PFE
 $ python3 -m venv venv
 $ . venv/bin/activate
+
 Install dependencies
 
 $ (venv) pip install Flask torch torchvision nltk
+
 Install nltk package
 
 $ (venv) python
