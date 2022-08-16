@@ -19,6 +19,8 @@ Install nltk package
 $ (venv) python
 >>> import nltk
 >>> nltk.download('punkt')
+
+
 Modify intents.json with different intents and responses for your Chatbot
 
 Run
