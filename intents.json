@@ -3,104 +3,68 @@
     {
       "tag": "greeting",
       "patterns": [
-        "Hi",
-        "Hey",
-        "Hello",
-        "How are you",
-        "Is anyone there?",
-        "Good morning"
+        "Bonjour",
+        "Salut",
+        "Coucou",
+        "Quoi de neuf?",
+        "Est-ce que quelqu'un est là?"
       ],
       "responses": [
-        "Hey!",
-        "Hello, thanks for visiting!",
-        "Hi there, what are your questions?",
-        "Good day, how may I help you?"
+        "Hé!",
+        "Bonjour, merci de votre visite !",
+        "Bonjour, quelles sont vos questions ?",
+        "Bonjour, comment puis-je vous aider ?"
       ]
     },
     {
       "tag": "farewell",
-      "patterns": ["Bye", "See you later", "Goodbye"],
+      "patterns": ["Bye", "A plus tard", "Au revoir"],
       "responses": [
-        "See you soon, thanks for visiting!",
-        "Have a great day!",
-        "Bye! Come back again soon."
+        "A bientôt, merci de votre visite !",
+        "Passe une bonne journée!",
+        "Au revoir! Revenez bientôt."
       ]
     },
     {
       "tag": "who",
       "patterns": [
-        "Who are you?",
-        "What is your name?",
-        "Introduce yourself"
+        "Qui es-tu?",
+        "Quel est ton nom?",
+        "Présentez-vous"
       ],
       "responses": [
-        "My name is Nobonita Paul.",
-        "I'm Nobonita Paul."
+        "Je m'appelle SopraHrBOT",
+        "Je suis SopraHrBOT"
       ]
     },
     {
-      "tag": "hometown",
+      "tag": "Congé",
       "patterns": [
-        "Where were you born?",
-        "What is your hometown?",
-        "Where are you from?",
-        "What is your nationality?"
+        "Combien de jours de congé par ans ? "
       ],
       "responses": [
-        "I am from Dhaka, Bangladesh",
-        "I was born in Dhaka, the capital of Bangladesh",
-        "My hometown is Uttara, a small city in Bangladesh"
+        "Vous avez le droit de 22 jours congés payés"
       ]
     },
     {
-      "tag": "birthday",
+      "tag": "Congémaladie",
       "patterns": [
-        "When were you born?",
-        "What is your birthday?",
-        "What is your date of birth?"
+        "est-ce que j'ai le droit des congés maladies?"
       ],
       "responses": [
-        "I was born in November 14, 2000",
-        "My birthday is 11/14/2000"
+        "au dela de 10 jours vous aurez le droit de prendres des congés maladies"
       ]
     },
+
     {
-      "tag": "school",
+      "tag": "Typecongé",
       "patterns": [
-        "Where do you go to college?",
-        "Where do you study?",
-        "What is your school?"
+        "quelles sont les types de congés dans Soprahr?"
       ],
       "responses": [
-        "I go to Cornell University"
-      ]
-    },
-    {
-      "tag": "major",
-      "patterns": [
-        "What is your major?",
-        "What do you study?"
-      ],
-      "responses": [
-        "My major is Computer Science",
-        "I study Computer Science with a minor in Linguistics"
-      ]
-    },
-    {
-      "tag": "joke",
-      "patterns": [
-        "Tell me a joke",
-        "Can I hear a joke?"
-      ],
-      "responses": [
-        "Why do cows wear bells? Because their horns don't work!",
-        "What do you call a man who can't stand? Neil!",
-        "Never lie to an X-Ray technician. They can see right through you!",
-        "How does a mathematician plough his fields? With a pro-tractor!",
-        "When is a door not a door? When it's ajar!",
-        "What do computers eat? Micro chips!",
-        "If you were a triangle, you would be acute one!"
+        "les types de congés dans Soprahr sont  : congé payé, malaide, récupération"
       ]
     }
+    
   ]
 }

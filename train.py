@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 import random
 import json
@@ -5,11 +6,11 @@ import json
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
-
+from nltk.corpus import treebank
 from nltk_utils import bag_of_words, tokenize, stem
 from model import NeuralNet
 
-with open('intents.json', 'r') as f:
+with open('intents.json', 'r',encoding='utf-8') as f:
     intents = json.load(f)
 
 all_words = []
@@ -112,7 +113,7 @@ for epoch in range(num_epochs):
         print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
 
 
-print(f'final loss: {loss.item():.4f}')
+print(f'final loss: {loss.item():.4f}') 
 
 data = {
 "model_state": model.state_dict(),
@@ -122,8 +123,10 @@ data = {
 "all_words": all_words,
 "tags": tags
 }
+t = treebank.parsed_sents('wsj_0001.mrg')[0]
 
 FILE = "data.pth"
+t.draw()
 torch.save(data, FILE)
 
 print(f'training complete. file saved to {FILE}')
