@@ -3,12 +3,13 @@ import json
 import torch
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
-
+import pymongo
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-with open('intents.json', 'r',encoding='utf-8') as json_data: 
-    intents = json.load(json_data)
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = client["SopraBot"]
+intents = mydb["intents"] 
 
 FILE = "data.pth"
 data = torch.load(FILE)
@@ -40,7 +41,7 @@ def get_response(msg):
     probs = torch.softmax(output, dim=1)
     prob = probs[0][predicted.item()]
     if prob.item() > 0.75:
-        for intent in intents['intents']:
+        for intent in intents.find():
             if tag == intent["tag"]:
                 return random.choice(intent['responses'])
     
