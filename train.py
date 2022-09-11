@@ -2,7 +2,7 @@
 import numpy as np
 import random
 import json
-
+import pymongo
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
@@ -10,14 +10,15 @@ from nltk.corpus import treebank
 from nltk_utils import bag_of_words, tokenize, stem
 from model import NeuralNet
 
-with open('intents.json', 'r',encoding='utf-8') as f:
-    intents = json.load(f)
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = client["SopraBot"]
+intents = mydb["intents"] 
 
 all_words = []
 tags = []
 xy = []
 # loop through each sentence in our intents patterns
-for intent in intents['intents']:
+for intent in intents.find():
     tag = intent['tag']
     # add to tag list
     tags.append(tag)
@@ -123,10 +124,8 @@ data = {
 "all_words": all_words,
 "tags": tags
 }
-t = treebank.parsed_sents('wsj_0001.mrg')[0]
 
 FILE = "data.pth"
-t.draw()
 torch.save(data, FILE)
 
 print(f'training complete. file saved to {FILE}')
