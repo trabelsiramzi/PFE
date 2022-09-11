@@ -4,7 +4,7 @@ import pymongo
 with open('intents.json', 'r',encoding='utf-8') as f:
   data = json.load(f)
 
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+client = pymongo.MongoClient("mongodb+srv://trabelsiramzitr:onDL29MjvCoQ9Mg7@cluster0.gsxhvhx.mongodb.net/?retryWrites=true&w=majority")
 mydb = client["SopraBot"]
 mycol = mydb["intents"]  
 

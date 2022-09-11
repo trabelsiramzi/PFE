@@ -7,7 +7,7 @@ import pymongo
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+client = pymongo.MongoClient("mongodb+srv://trabelsiramzitr:onDL29MjvCoQ9Mg7@cluster0.gsxhvhx.mongodb.net/?retryWrites=true&w=majority")
 mydb = client["SopraBot"]
 intents = mydb["intents"] 
 

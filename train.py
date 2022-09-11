@@ -10,7 +10,7 @@ from nltk.corpus import treebank
 from nltk_utils import bag_of_words, tokenize, stem
 from model import NeuralNet
 
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+client = pymongo.MongoClient("mongodb+srv://trabelsiramzitr:onDL29MjvCoQ9Mg7@cluster0.gsxhvhx.mongodb.net/?retryWrites=true&w=majority")
 mydb = client["SopraBot"]
 intents = mydb["intents"] 
 
