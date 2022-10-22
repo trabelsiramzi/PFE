@@ -1,16 +1,12 @@
 import random
 import json
 import torch
+from config import *
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
-import pymongo
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-client = pymongo.MongoClient("mongodb+srv://trabelsiramzitr:onDL29MjvCoQ9Mg7@cluster0.gsxhvhx.mongodb.net/?retryWrites=true&w=majority")
-mydb = client["SopraBot"]
 intents = mydb["intents"] 
-
 FILE = "data.pth"
 data = torch.load(FILE)
 
