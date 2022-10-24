@@ -95,17 +95,17 @@ var head = document.getElementsByTagName('HEAD')[0];
         head.appendChild(link);
 //Create HTML file 
 var chatboxDiv = document.querySelector(".chatbox");
-const image = document.createElement('img');
-
+/*const image = document.createElement('img');
+*/
 // Remote image
-image.setAttribute(
+/*image.setAttribute(
   'src',
   "https://img.icons8.com/external-sbts2018-flat-sbts2018/58/000000/external-agent-basic-ui-elements-2.4-sbts2018-flat-sbts2018.png",
-);
-var h4=document.createElement('h4');
+);*/
+var h4=document.createElement('h3');
 h4.setAttribute('class',"chatbox__heading--header");
 h4.innerHTML="SOPRAHR BOT";
-var p=document.createElement('p');
+var p=document.createElement('h4');
 p.setAttribute('class',"chatbox__heading--header");
 p.innerHTML="Votre assistant virtuel";
 
@@ -118,8 +118,8 @@ divchatboxheader.appendChild(p);
 //chatbox image hearder 
  var divimageheader = document.createElement('div');
  divimageheader.setAttribute('class',"chatbox__image--header");
-divimageheader.appendChild(image);
-
+/*divimageheader.appendChild(image);
+*/
 //chatbot header 
 var divchatheader = document.createElement('div');
  divchatheader.setAttribute('class',"chatbox__header");
@@ -161,15 +161,20 @@ const imagebt = document.createElement('img');
 // Remote image
 imagebt.setAttribute(
   'src',
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAB/UlEQVRYhe1WPUscURQ9d76WjbuErRRd0hqIxMJqycbeQtRiCVj4Hwxold4UgRR2YQkoGpBJY2EEtRLFr0iKkBQ2wpIiRVRkRXFm5900KYLcN7vzHLMpPOU5l3fOXM57DHCPNoOSDPN4uRBmwlGGNQKoxwAV/0g/QfyVFH1yA+cjfdg6SzUAV0rZoIMnQZgG8LDJ+DkYb7184TXNrl7fOsDlRKnHdngZjIFWwv518qGyVCVb3T82DnA5Ueqxbd4FUIybi0EtsvnZg+reD92ApRO4UsraDi/fwhwAHtkNWuHKEy9xgCDHLxOvXQLhaZDLT+llATxeLgSZxjGaF65VXHhkd9P77fpNQdxA6EVjKZoDQC7k6IUkOBLJlhoGy/10e8ugjoKo8cUpwqNtWQOGAFRv8nIHmPpEHgCYtRIQp6FfIsUNAOjUnaL7whbQJZG6W5A3dYlBQyJ1G9DCtAMAfkmk9h3QwrwDnyUy8QZMO0DAhsQn34AZ6i7ZS20MQDPSK/ivAnzx3OCNTrzrADUVOaP07jBsR4BdFTnPs/NbtbihuwhwCuCV54aDzcwBg2uoNSWskaJ117J8XeHSDnANYJ2IfLcOn/ydK5NDkgZQTNiBYj+jeIHm909MTE0CfAfBV5aaa/aXm0oAZt4ksoqAWoJSi5m5g29pmt7jv8JvRnimeDoeXboAAAAASUVORK5CYII=",
-);
-var divimagebutton = document.createElement('div');
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAADyElEQVRoge2Zz2scZRjHP8+8Oxu3iTlUL6KBFAUP4hbBkqh3IbGlm9ksYv8A6V3B6KEJnoKiV6XXgghpZldM7KF3keRij4KF2JZKDypNf5mdeefxkJ3ttsTMu7uzXSP5wsIz7zw/vl9e3vd5Z184xCH6grg6PqhUJo3nfSwwq/AcYHLmYgV+V1i3SbJcajS2XIKcBETz829rklwEnu6LojvuiGrVr9cvZzlmCnhQqx0z1l7hyZHfheq2FSmXwvC3/dy8rDzG2gWeNHkAkXEjspDllilAYDYfRj1ANbN2poDWgh0Wns9yyBRA/rtNN8is7SLgP41DAcPGI30grlZnE9Ul4DhQHA6lf0UTuOIlyWKh0biUDrZnoEV+DTiBI3mF9diYF2KYUJFL2RF9xRWBE4nnrceVykw62J6BZhBstMg7I4aJI2F4A+D+6dMTBWOuDTKuAxvFMJyCR9fA8dTwd3aOFsNQimHofNgbFFIevjHPdAy3uRY6fVND1tf/ckluRM7fD4L3sVaMMeddSfUSJysrfzaDIH0cSY3C3u5uENWZAlzHdNfreo3bCwd+G/1fCWimhtZqR4fApSf0tY0OE+kO2Z4BL0kWAe02kcAn/ujoGHAW1W2HkNvAWT+OxwWWuq23R/2HiCuVmcTzFoHXcOzG/ujomFy4cA9AT516NvL99xTeETjGw/P8dYUtUV3z4Vup1/8A0JmZ8ahUut0L8XQGMhtVMwj2nRUR+cBfXf2yFxLR3NyHKvL5fj6dzbSTSzreVx8AUNUvoiB40ybJR081GlddYv6uVF40xnymqkG29/7oWwCAQtXzvKAZBD8CF4GffGOucvfu7poYGxuP4/glFZkCasAbqprLMSUXAS0I8FbrR2QtlEq7b6wFGcyxyqWR2YFUdkNmbRcBN3Mg0ituZDm4CPghByK9IrN2pgCbJMvAnVzodAPVbWvMcpZbpoBSo7ElqlXHLpsPVLcF5ksrK5lfak6nUb9ev2xFyoh8DVxjMAvbtnJ/ZQuFV13+mYYu7geGDa3VTGRt3Hq0xTAswAH6HtiJosnUFriV2gdGgPG8M+0Hkc3UzLMT74l4bu5kInIOeAX4VUU+HVldXe0mR7NanVLV9l1BAt+k9kDXQIv8948Nq4rUskRorWZ2omjSeN4ZhQXgSOvVpl8uT8vSUgIDFtAMgk3g9RxT3rIw1XntNOg18HKOuTZtkkw/fmc2aAG/9BFrBW6KyHcq8q5fLk/vdfU6nDUA1ZEwrOdRY6AzUKjX1zw4CWwA9xD5OU/yhzhEDvgHG2dVNTsZwJgAAAAASUVORK5CYII=");
+  var divimagebutton = document.createElement('div');
  divimagebutton.setAttribute('class',"chatbox__button");
 divimagebutton.appendChild(imagebt);
 //div content 
 chatboxDiv.appendChild(divchatboxsupport);
 chatboxDiv.appendChild(divimagebutton);
 
+//div chatbot 
+var body = document.getElementsByTagName('BODY')[0];
+var divchatbot = document.createElement('div');
+divchatbot.setAttribute('class',"chatbox");
+divchatbot.appendChild(chatboxDiv);
+body.appendChild(divchatbot);
 //script root 
 $SCRIPT_ROOT = "http://127.0.0.1:5000";
 //run chatbox 

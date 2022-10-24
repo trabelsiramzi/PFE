@@ -12,8 +12,8 @@ body {
 }
 
 *, html {
-    --primaryGradient: linear-gradient(93.12deg, #cf022b 0.52%,  #f07d00 100%);
-    --secondaryGradient: linear-gradient(268.91deg, #cf022b -2.14%,  #f07d00 99.69%);
+    --primaryGradient: linear-gradient(93.12deg, #cf022b 0.52%,  #EEEEEE 100%);
+    --secondaryGradient: linear-gradient(268.91deg, #EEEEEE -2.14%,  #EEEEEE 99.69%);
     --primaryBoxShadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
     --secondaryBoxShadow: 0px -10px 15px rgba(0, 0, 0, 0.1);
     --primary: #cf022b;
@@ -22,6 +22,7 @@ body {
 /* CHATBOX
 =============== */
 .chatbox {
+    z-index:9;
     position: absolute;
     bottom: 30px;
     right: 30px;
@@ -125,12 +126,14 @@ body {
 
 .chatbox__heading--header {
     font-size: 1.2rem;
-    color: white;
+    color: black;
+    font-weight: bold;
 }
 
 .chatbox__description--header {
     font-size: .9rem;
     color: white;
+
 }
 
 /* Messages */
@@ -184,6 +187,8 @@ body {
 
 .chatbox__send--footer {
     color: white;
+    border-style: inset;
+    background-color:#cf022b ;
 }
 
 .chatbox__button button,

@@ -1,0 +1,286 @@
+document.body.addEventListener('powell-fav-apps-changed', function(event) {
+    console.log("Get Applications");
+    var uri = 'https://api.is.soprasteria.com/appmdapi/api/v1/applications?page=1&pageSize=100&IsEnable=true&user=';
+	var uriPref = "https://api.is.soprasteria.com/soacomponents/AdminSI/GestionParametres/Hosts/OData/Preference.svc/GetPreferenceByNumemploye?iNumemp=";
+	var uriPMD = "https://api.is.soprasteria.com/pmdapi/api/v1/professionalcontactinformations/professionalcontactinformationsummaries?where=Email:equal:";
+    var bearer = 'Basic YmFhZGY0NDYtZDgxNC00NGFiLWE3ZDYtMjBlNzFhODJhZmUwOmVjMWY1NTM5LTk5NzQtNDM0ZC05NDJjLWZkZjgwNDdmZmFhNg==';
+    
+    var message = "To access application list, click here";
+    switch (_spPageContextInfo.currentLanguage) {
+      case 1036:
+        message = "Pour accéder aux applications, cliquez ici";
+        break;
+      case 1033:
+        message = "To access application list, click here";
+        break;
+      case 1034:
+         message = "Para acceder a las aplicaciones, haga clic aquí";
+        break;
+      case 1040:
+        message = "Per accedere alle applicazioni, fare clic qui";
+        break;
+      case 1031:
+        message = "Klicken Sie hier, um auf die Anwendungen zuzugreifen";
+        break;
+      default:
+        message = "To access application list, click here";
+    }
+
+    PowellFunction.request({ 
+            "method": "GET",
+            "url": 'https://ssgmyapp.azurewebsites.net/api/AppWebPartIPFinder?code=T7eFawC0aWdp9nECcdivH0YjCIRyaj2swQjU6t/A5zdtvt0fdfinSA==',
+    }).then(function(response) {
+		try
+		{
+			var stringInternal = '1';
+			var isIPInternal = false;
+			if (response.responseText==='"Internal"')
+			{
+				stringInternal = '0';
+				isIPInternal=true;
+			}
+			
+			// Retrieve employee number
+			Powell.start.then(function (framework) {
+				framework.Plugins.UserProfile.getMyProperties({
+					"siteUrl": _spPageContextInfo.siteAbsoluteUrl
+				}).then(function(properties) {
+					try
+					{			
+						for (var i = 0; i < properties.length; i++) {
+							var property = properties[i]; 
+							if (property.Key == "KM-EmployeeNumber") {  
+								numEmploye = property.Value;  
+							}
+						}
+					}
+					catch(error)
+					{
+						numEmploye = "-1"
+					}
+					//console.log("numEmploye:" + numEmploye);
+					
+					// Retrieve preferences
+					PowellFunction.request({
+					"method": "GET",
+					"url": uriPref + numEmploye,
+					"headers" : {
+						"Authorization" : bearer,
+						"Accept":'application/json'
+					}
+					}).then(function(response) {
+						
+						var lang1 = "1";
+						var lang2 = "1";
+						if (numEmploye!='-1')
+						{
+						    try
+						    {
+    							var prefs = JSON.parse(response.responseText).d;
+    							lang1 = prefs[0].UTIL_LANGUEPREFEREEID;
+    							lang2 = prefs[0].UTIL_LANGUESECONDAIREID;
+						    }
+						    catch(error)
+							{
+								var errorFilteredApps = [];
+								var loaded=false;
+								event.detail.data.apps.forEach(function(app, index) {
+									if(!loaded && app.isPin)
+									{
+                    					app.url='https://siteredirect.azurewebsites.net/api/URLRedirect?URLId=74eb43bf-a9ae-48e3-a153-f9c65e156c63';
+                    					app.title=message;
+										app.category='Error';
+										app.description='';
+										app.picto='https://publiccdn.sharepointonline.com/steria.sharepoint.com/sites/intra_root/SiteAssets/Application_Pictos/app_error.png';
+										app.target='_blank';
+										errorFilteredApps.push(angular.copy(app));
+										loaded=true;
+									}
+								});
+
+								event.detail.this.globalApps = errorFilteredApps;
+								event.detail.this.$scope.$apply();
+							}
+						}
+						//Retrieve COLS_ID
+						PowellFunction.request({
+						"method": "GET",
+						"url": uriPMD + _spPageContextInfo.userEmail + ":and",
+						"headers" : {
+							"Authorization" : bearer,
+						}
+						}).then(function(response) {
+							var colsId = "-1";
+							try
+							{
+								var pmdInfo = JSON.parse(response.responseText).Results;
+								colsId = pmdInfo[0].IdEmployee;
+							}
+							catch(error)
+							{
+								var errorFilteredApps = [];
+								var loaded=false;
+								event.detail.data.apps.forEach(function(app, index) {
+									if(!loaded && app.isPin)
+									{
+										app.url='https://siteredirect.azurewebsites.net/api/URLRedirect?URLId=74eb43bf-a9ae-48e3-a153-f9c65e156c63';
+										app.title=message;
+										app.category='Error';
+										app.description='';
+										app.picto='https://publiccdn.sharepointonline.com/steria.sharepoint.com/sites/intra_root/SiteAssets/Application_Pictos/app_error.png';
+										app.target='_blank';
+										errorFilteredApps.push(angular.copy(app));
+										loaded=true;
+									}
+								});
+								
+								event.detail.this.globalApps = errorFilteredApps;
+								event.detail.this.$scope.$apply();
+							}
+							// Retrieve applications
+							PowellFunction.request({
+							"method": "GET",
+							"url": uri + colsId,
+							"headers" : {
+								"Authorization" : bearer,
+							}
+							}).then(function(response) {
+								try
+								{
+									var apiApps = JSON.parse(response.responseText).Results;
+									var newFilteredApps = [];
+									var favApps = '';
+									event.detail.data.apps.forEach(function(app, index) {
+										if (apiApps.some(function(apiApp) {
+											var alreadyLoaded = !Number.isInteger(parseInt(app.description));
+											var mustAppear = (alreadyLoaded || (apiApp.Id === parseInt(app.description)) && (apiApp.IsVisibleMyApplications===true) && ((apiApp.IsExtranet===true) || isIPInternal));
+											if (mustAppear && !alreadyLoaded)
+											{
+												if (isIPInternal)
+												{
+													app.url = apiApp.Path;
+												}
+												else
+												{
+													app.url = apiApp.ExternalPath;
+												}
+												
+												var appTitle = '';
+												var theme = '';
+												
+												// Retrieve translations in first language
+												for (var j = 0; j < apiApp.Translations.length; j++) {
+													var transl = apiApp.Translations[j]; 
+													if (transl.LanguageId==lang1)	
+													{  
+														appTitle = transl.Label; 
+														theme = transl.Theme;
+													}
+												}
+												
+												// Retrieve translations in second language if not available in first
+												for (var k = 0; k < apiApp.Translations.length; k++) {
+													var transl2 = apiApp.Translations[k]; 
+													if (transl2.LanguageId==lang2)	
+													{  
+														if (appTitle==='')
+														{
+															appTitle = transl2.Label; 
+														}
+														if (theme==='')
+														{
+															theme = transl2.Theme;
+														}
+														
+													}
+												}
+												
+												app.title = appTitle;
+												app.category = theme;
+												app.description = '';
+												
+												if (app.isPin || app.isFav)
+												{
+													favApps=addValue(favApps,apiApp.Id.toString());
+												}
+											}
+											
+											return mustAppear;
+										})) {
+											newFilteredApps.push(angular.copy(app));
+										}
+									});
+									if (favApps.length>0)
+									{
+										var now = new Date();
+										var time = now.getTime();
+										var expireTime = time + 1000000000000;
+										now.setTime(expireTime);
+										document.cookie='F2FFavApps='+favApps+';expires='+now.toUTCString();
+									}
+									event.detail.this.globalApps = newFilteredApps;
+									event.detail.this.$scope.$apply();
+								}
+								catch(error)
+								{
+									var errorFilteredApps = [];
+									var loaded=false;
+									event.detail.data.apps.forEach(function(app, index) {
+										if(!loaded && app.isPin)
+										{
+											app.url='https://siteredirect.azurewebsites.net/api/URLRedirect?URLId=74eb43bf-a9ae-48e3-a153-f9c65e156c63';
+											app.title=message;
+											app.category='Error';
+											app.description='';
+											app.picto='https://publiccdn.sharepointonline.com/steria.sharepoint.com/sites/intra_root/SiteAssets/Application_Pictos/app_error.png';
+											app.target='_blank';
+											errorFilteredApps.push(angular.copy(app));
+											loaded=true;
+										}
+									});
+									
+									event.detail.this.globalApps = errorFilteredApps;
+									event.detail.this.$scope.$apply();
+								}
+							});	
+						});
+					});
+				});
+			})
+		}
+		catch(error)
+		{
+			var errorFilteredApps = [];
+			var loaded=false;
+			event.detail.data.apps.forEach(function(app, index) {
+				if(!loaded && app.isPin)
+				{
+					app.url='https://siteredirect.azurewebsites.net/api/URLRedirect?URLId=74eb43bf-a9ae-48e3-a153-f9c65e156c63';
+                    app.title=message;
+					app.category='Error';
+					app.description='';
+					app.picto='https://publiccdn.sharepointonline.com/steria.sharepoint.com/sites/intra_root/SiteAssets/Application_Pictos/app_error.png';
+					app.target='_blank';
+					errorFilteredApps.push(angular.copy(app));
+					loaded=true;
+				}
+			});
+			
+			event.detail.this.globalApps = errorFilteredApps;
+			event.detail.this.$scope.$apply();
+		}
+	});
+});
+var eventApps = new CustomEvent('powell-fav-apps-need-custom-reload');
+document.body.dispatchEvent(eventApps);
+
+function addValue(currentList, valueToAdd) {
+    if (currentList.length==0)
+    {
+        return valueToAdd;
+    }
+    else
+    {
+        return currentList+', '+valueToAdd;
+    }
+}

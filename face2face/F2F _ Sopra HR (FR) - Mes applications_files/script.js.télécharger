@@ -1,0 +1,152 @@
+// -----------------------------------
+// HIDE O365 BANNER
+// -----------------------------------
+
+var timer_header = setInterval(function() {
+    console.log("O365 header > getElementById(SuiteNavPlaceholder): " + document.getElementById("SuiteNavPlaceholder"));
+    if (document.getElementById("SuiteNavPlaceholder")) {
+        wclass = document.getElementById("SuiteNavPlaceholder").className;
+        console.log("O365 header > wclass: " + wclass);
+        // if (wclass == "open") { // O365 ribbon is open > we close it
+        if (wclass.indexOf("open") >= 0) {
+            document.querySelector('.toggle-ribbon').click();
+        }
+        clearInterval(timer_header);
+    }
+}, 250);
+
+// ---------------------------------
+// Homepage banner search box enter
+// --------------------------------
+function search_enter(ele) {
+    if ((event.key === 'Enter') && (ele.value)) {
+        window.location = "https://steria.sharepoint.com/sites/intra_shrs_fr/sitepages/search-all.aspx?k=" + ele.value;
+    }
+}
+
+function search_click(ele) {
+    wele = ele.previousElementSibling.value;
+    if (wele.length>0) {
+        window.location = "https://steria.sharepoint.com/sites/intra_shrs_fr/sitepages/search-all.aspx?k=" + wele;
+    }
+}
+
+// -----------------------------------
+// LISTENER ON SCROLL PAGE
+// -----------------------------------
+var timer_scroll_header = setInterval(function() {
+     // Launch listener on scroll page to hide searchbox
+     if (document.querySelectorAll("[data-automation-id=contentScrollRegion]")[0]) {
+         document.querySelectorAll("[data-automation-id=contentScrollRegion]")[0].addEventListener("scroll", function () {
+              yScroll_header();
+          }, false);
+          clearInterval(timer_scroll_header);
+     }
+  }, 250);
+
+// --------------------------------------------
+// Hide search box homepage banner and alert bannner when scrolling page down
+// --------------------------------------------
+var wheader_header, wheader_top_header, wtopnav_header, yPos_header;
+function yScroll_header() {
+	whomepage_banner_searchbox_header = document.getElementById('homepage_banner_searchbox');
+	wpowell_alert = document.getElementById('powell-alert');
+	yPos_header = document.querySelectorAll("[data-automation-id=contentScrollRegion]")[0].scrollTop;
+	//console.log("Scroll page > wpowell_alert:" + wpowell_alert);
+	if (yPos_header > 60) {
+		whomepage_banner_searchbox_header.classList.add("homepage_banner_searchbox_hide");
+		wpowell_alert.classList.add("homepage_banner_searchbox_hide");
+	} else {
+		whomepage_banner_searchbox_header.classList.remove("homepage_banner_searchbox_hide");
+		wpowell_alert.classList.remove("homepage_banner_searchbox_hide");
+	}
+}
+
+// ------------------------------------------
+// Advanced search: Open a search page with existing "k" parameter
+// ------------------------------------------
+function advanced_search_page(target) {
+    var wurl = window.location.href;
+    var captured = /k=([^&]+)/.exec(wurl);
+    var wk = captured ? captured[1] : '';
+    window.location.href = "./search-"+target+".aspx?k="+wk;
+}
+
+// ------------------------------------------
+// Open "My Application" pannel from a button/link
+// ------------------------------------------
+function display_favorites_pannel() {
+    setTimeout(function() {
+        document.querySelector('.wrapper-custom-links-standard .dropdown-title').click(); 
+    }, 0);
+}
+
+// ------------------------------------------
+// Open "All applications" pannel from a button/link
+// ------------------------------------------
+function display_allapps_pannel() {
+    setTimeout(function() {
+        //document.querySelector('.favorite-widget .btn-more').click(); 
+        document.querySelector('.powell-global-application .powell-tool-button').click(); 
+    }, 0);
+}
+
+
+// ---------------------------------
+// Add information into vCard pannel
+// ---------------------------------
+function createTemplate(selector, userEmail) {
+    var element = document.querySelector(selector);
+    if (element) {
+        element.innerHTML = "";
+        var template = document.createElement("div");
+        template.setAttribute('load-user-properties', '');
+        template.setAttribute('email', userEmail);
+        template.innerHTML = '<div ng-if="userProperties">\
+                    <ul class="up-detail-info-container">\
+                        <li style="border-bottom: #d7d7d7; border-bottom-width: 1px; border-bottom-style: solid; padding-bottom: 10px;" class="up-detail-info-item" ng-if="userProperties[\'KM-Office\']">\
+                            <span title="" class="up-detail-info-img KM-Office"></span>\
+                            <div class="up-detail-info-content">\
+                                <span class="up-detail-title">{{userProperties["KM-Office"]}}</span>\
+                            </div>\
+                        </li>\
+                        <li style="border-bottom: #d7d7d7; border-bottom-width: 1px; border-bottom-style: solid;" class="up-detail-info-item" ng-if="userProperties[\'KM-FullPhone\']">\
+                            <span title="" class="up-detail-info-img KM-FullPhone"></span>\
+                            <div class="up-detail-info-content">\
+                                <span style="display: inline-block;" class="up-detail-title"><a href="tel:{{userProperties[\'KM-FullPhone\']}}">{{userProperties["KM-FullPhone"]}}</a></span>\
+                                <span style="display: inline-block;" ng-if="userProperties[\'KM-ShortPhone\']" class="up-detail-title"> | Short: {{userProperties["KM-ShortPhone"]}}</span>\
+                            </div>\
+                        </li>\
+                        <li style="border-bottom: #d7d7d7; border-bottom-width: 1px; border-bottom-style: solid; padding-bottom: 10px;" class="up-detail-info-item" ng-if="userProperties[\'KM-Mobile\']">\
+                            <span title="" class="up-detail-info-img KM-Mobile"></span>\
+                            <div class="up-detail-info-content">\
+                                <span class="up-detail-title"><a href="tel:{{userProperties[\'KM-Mobile\']}}">{{userProperties["KM-Mobile"]}}</a></span>\
+                            </div>\
+                        </li>\
+                    </ul></div>';
+        window.Expertime.compileAngular(template, function(el) { element.appendChild(template); });
+    } else { setTimeout(createTemplate(element, userEmail), 1000); }
+}
+
+document.addEventListener('vcardLoaded', function(e) {
+    createTemplate('#placeholder-before-detail-info', e.detail.username);
+});
+
+// ----------------------
+// Open chatbot in popup
+// ----------------------
+function open_chatbot() {
+    var wwidth=0, wheight=0, wresiable=0, wpopup_width=800, wpopup_height=520, wpopup_top=0, wpopup_left=0, wpopup_options="", wurl="";
+    
+    wwidth = window.innerWidth;
+    wheight = window.innerHeight;
+    wpopup_top = (wheight-wpopup_height)/2;
+    wpopup_left = (wwidth-wpopup_width)/2;
+    wpopup_options = "resizable=yes,menubar=no,status=no,scrollbars=no,menubar=no,width="+wpopup_width+",height="+wpopup_height+",left="+wpopup_left+",top="+wpopup_top+"";
+    wurl = "https://siteredirect.azurewebsites.net/api/URLRedirect?URLId=c0329cd6-d48d-4999-9eda-f8358c7a7523";
+    
+    console.log("scren (w/h): " + wwidth + "/" + wheight);
+    console.log("chatbot: " + wpopup_options);
+    
+    window.open(wurl,"ChatBotPopup",wpopup_options);
+}
